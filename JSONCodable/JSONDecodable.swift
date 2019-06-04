@@ -97,14 +97,10 @@ public class JSONDecoder {
     /// Get index from `"[0]"` formatted `String`
     /// returns `nil` if invalid format (i.e. no brackets or contents not an `Int`)
     internal func parseArrayIndex(_ key:String) -> Int? {
-        var chars = key.characters
-        let first = chars.popFirst()
-        let last = chars.popLast()
-        if first == "[" && last == "]" {
-            return Int(String(chars))
-        } else {
-            return nil
-        }
+        guard key.count > 2 && key.first == "[" && key.last == "]" else { return nil }
+        let start = key.index(after: key.startIndex)
+        let end = key.index(before: key.endIndex)
+        return Int(key[start...end])
     }
     
     private func get(_ key: String) -> Any? {
